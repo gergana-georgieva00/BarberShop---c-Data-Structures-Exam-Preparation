@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BarberShop
 {
@@ -35,29 +36,38 @@ namespace BarberShop
             => clientsByNames.ContainsKey(c.Name);
 
         public IEnumerable<Barber> GetBarbers()
-        {
-            throw new NotImplementedException();
-        }
+            => barbersByNames.Values;
 
         public IEnumerable<Client> GetClients()
-        {
-            throw new NotImplementedException();
-        }
+            => clientsByNames.Values;
 
         public void AssignClient(Barber b, Client c)
         {
-            throw new NotImplementedException();
+            if (!clientsByNames.ContainsKey(c.Name))
+            {
+                throw new ArgumentException();
+            }
+            if (!barbersByNames.ContainsKey(b.Name))
+            {
+                throw new ArgumentException();
+            }
+
+            b.Clients.Add(c);
+            clientsByNames.Add(c.Name, c);
         }
 
         public void DeleteAllClientsFrom(Barber b)
         {
-            throw new NotImplementedException();
+            if (!barbersByNames.ContainsKey(b.Name))
+            {
+                throw new ArgumentException();
+            }
+
+            b.Clients = new List<Client>();
         }
 
         public IEnumerable<Client> GetClientsWithNoBarber()
-        {
-            throw new NotImplementedException();
-        }
+            => clientsByNames.Values.Where(c => c.Barber is null);
 
         public IEnumerable<Barber> GetAllBarbersSortedWithClientsCountDesc()
         {
