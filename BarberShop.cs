@@ -20,18 +20,19 @@ namespace BarberShop
 
         public void AddClient(Client c)
         {
-            throw new NotImplementedException();
+            if (clientsByNames.ContainsKey(c.Name))
+            {
+                throw new ArgumentException();
+            }
+
+            clientsByNames.Add(c.Name, c);
         }
 
         public bool Exist(Barber b)
-        {
-            throw new NotImplementedException();
-        }
+            => barbersByNames.ContainsKey(b.Name);
 
         public bool Exist(Client c)
-        {
-            throw new NotImplementedException();
-        }
+            => clientsByNames.ContainsKey(c.Name);
 
         public IEnumerable<Barber> GetBarbers()
         {
