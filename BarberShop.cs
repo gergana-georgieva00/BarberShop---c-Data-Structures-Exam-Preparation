@@ -53,7 +53,7 @@ namespace BarberShop
             }
 
             b.Clients.Add(c);
-            clientsByNames.Add(c.Name, c);
+            c.Barber = b;
         }
 
         public void DeleteAllClientsFrom(Barber b)
@@ -63,25 +63,25 @@ namespace BarberShop
                 throw new ArgumentException();
             }
 
-            b.Clients = new List<Client>();
+            var collection = b.Clients;
+            b.Clients.Clear();
+
+            foreach (var client in collection)
+            {
+                client.Barber = null;
+            }
         }
 
         public IEnumerable<Client> GetClientsWithNoBarber()
             => clientsByNames.Values.Where(c => c.Barber is null);
 
         public IEnumerable<Barber> GetAllBarbersSortedWithClientsCountDesc()
-        {
-            throw new NotImplementedException();
-        }
+            => barbersByNames.Values.OrderByDescending(b => b.Clients.Count);
 
         public IEnumerable<Barber> GetAllBarbersSortedWithStarsDecsendingAndHaircutPriceAsc()
-        {
-            throw new NotImplementedException();
-        }
+            => barbersByNames.Values.OrderByDescending(b => b.Stars).ThenBy(b => b.HaircutPrice);
 
         public IEnumerable<Client> GetClientsSortedByAgeDescAndBarbersStarsDesc()
-        {
-            throw new NotImplementedException();
-        }
+            => clientsByNames.Values.OrderByDescending(c => c.Age).ThenByDescending(c => c.Barber.Stars);
     }
 }
